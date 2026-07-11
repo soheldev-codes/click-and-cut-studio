@@ -1,6 +1,7 @@
 import Hero from "@/components/home/Hero";
 import Portfolio from "@/components/home/Portfolio";
 import Statistics from "@/components/home/Statistics";
+import Testimonials from "@/components/home/Testimonials";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Navbar from "@/components/shared/Navbar";
 import FeaturedServices from "@/FeaturedServices";
@@ -15,6 +16,7 @@ export default function Home() {
       <Portfolio />
       <WhyChooseUs />
       <Statistics />
+      <Testimonials />
     </main>
   );
 }
