@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import Providers from "@/providers/Providers";
 import "./globals.css";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -37,7 +39,12 @@ export default function RootLayout({
   className={`${inter.variable} ${poppins.variable}`}
 >
       <body className="min-h-screen bg-background text-foreground font-sans">
-  <Providers>{children}</Providers>
+  <Providers>
+        <Navbar />
+
+    {children}
+    <Footer />
+    </Providers>
 </body>
     </html>
   );
