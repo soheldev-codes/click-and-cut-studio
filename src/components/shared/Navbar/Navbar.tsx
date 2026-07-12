@@ -1,14 +1,13 @@
-import Link from "next/link";
 
 import Container from "@/components/shared/Container";
 import Logo from "@/components/shared/Logo";
-
+import UserMenu from "./UserMenu";
 
 import NavLinks from "./NavLinks";
 import ThemeToggle from "./ThemeToggle";
-import Button from "@/components/ui/button";
+
 import MobileMenu from "./MobileMenu";
-import { HiOutlineUserCircle } from "react-icons/hi2";
+
 
 export default function Navbar() {
     return (
@@ -31,13 +30,8 @@ export default function Navbar() {
                     {/* Right */}
                     <div className="hidden items-center gap-3 lg:flex">
                         <ThemeToggle />
-
-                        <Link href="/login">
-                            <Button className="gap-2">
-  <HiOutlineUserCircle className="text-lg" />
-  Login
-</Button>
-                        </Link>
+                        <UserMenu />
+                        
                     </div>
 
                     <MobileMenu />
