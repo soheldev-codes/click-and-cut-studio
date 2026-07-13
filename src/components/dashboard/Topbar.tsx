@@ -1,11 +1,17 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { HiOutlineBars3, HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import ThemeToggle from "@/components/shared/Navbar/ThemeToggle";
 import UserMenu from "@/components/shared/Navbar/UserMenu";
 
-export default function Topbar() {
+type TopbarProps = {
+  onMenuClick: () => void;
+};
+
+export default function Topbar({
+  onMenuClick,
+}: TopbarProps) {
   const pathname = usePathname();
 
   const title =
@@ -20,8 +26,16 @@ export default function Topbar() {
   return (
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-zinc-200 bg-white/80 px-5 lg:px-8 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-900/80">
 
+<button
+    onClick={onMenuClick}
+    className="rounded-lg p-2 transition hover:bg-zinc-100 dark:hover:bg-zinc-800 lg:hidden"
+  >
+    <HiOutlineBars3 className="text-2xl" />
+  </button>
   {/* Left */}
   <div>
+
+   
     <h1 className="text-2xl font-bold">{title}</h1>
 
     <p className="text-sm text-zinc-500">
@@ -40,6 +54,8 @@ export default function Topbar() {
         className="h-11 w-56 bg-transparent px-3 text-sm outline-none"
       />
     </div>
+
+    
 
     <ThemeToggle />
 
