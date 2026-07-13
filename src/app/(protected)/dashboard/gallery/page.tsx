@@ -1,20 +1,13 @@
-import React from 'react';
-
-// প্রপসের জন্য ইন্টারফেস ডিফাইন করা
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-}
-
-const SimpleButton: React.FC<ButtonProps> = ({ label, onClick }) => {
+import GalleryHeader from "@/components/dashboard/gallery/GalleryHeader";
+import GalleryToolbar from "@/components/dashboard/gallery/GalleryToolbar";
+import GalleryGrid from "@/components/dashboard/gallery/GalleryGrid";
+export default function GalleryPage() {
   return (
-    <button 
-      onClick={onClick}
-      style={{ padding: '10px 20px', cursor: 'pointer' }}
-    >
-      {label} Hello Gallary
-    </button>
-  );
-};
+    <div className="space-y-6">
+      <GalleryHeader />
 
-export default SimpleButton;
+      <GalleryToolbar />
+      <GalleryGrid />
+    </div>
+  );
+}
