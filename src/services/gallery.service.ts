@@ -16,7 +16,7 @@ export async function createGallery(
   payload: CreateGalleryPayload
 ) {
   const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/gallery`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/gallery`,
     payload,
     {
       withCredentials: true,
@@ -24,4 +24,51 @@ export async function createGallery(
   );
 
   return data;
+}
+
+
+export async function getGalleries() {
+  const response = await fetch("/api/gallery", {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch galleries");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
+
+
+export async function getGallery(id: string) {
+  const response = await fetch(`/api/gallery/${id}`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch gallery");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
+
+
+export async function deleteGallery(id: string) {
+  const response = await fetch(`/api/gallery/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete gallery");
+  }
+
+  return response.json();
 }
