@@ -125,3 +125,46 @@ export async function getPublicGallery(id: string) {
 
   return result.data;
 }
+
+
+
+
+export async function getClientGalleries() {
+  const response = await fetch(
+    "/api/client/gallery",
+    {
+      credentials: "include",
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch client galleries"
+    );
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
+
+
+
+export async function getClientGallery(id: string) {
+  const response = await fetch(
+    `/api/client/gallery/${id}`,
+    {
+      credentials: "include",
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch gallery");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
