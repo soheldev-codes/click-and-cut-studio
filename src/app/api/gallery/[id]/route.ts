@@ -117,3 +117,83 @@ export async function DELETE(
     );
   }
 }
+
+
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const { id } = await params;
+
+    const body = await request.json();
+
+    const db = await getDb();
+
+    const result = await db.collection("galleries").updateOne(
+      {
+        _id: new ObjectId(id),
+        createdBy: session.user.id,
+      },
+      {
+        $set: {
+          title: body.title,
+          clientName: body.clientName,
+          clientEmail: body.clientEmail,
+          eventType: body.eventType,
+          eventDate: body.eventDate,
+          visibility: body.visibility,
+          description: body.description,
+          coverImage: body.coverImage,
+          galleryImages: body.galleryImages,
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    if (!result.matchedCount) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Gallery not found",
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Gallery updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Internal Server Error",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}

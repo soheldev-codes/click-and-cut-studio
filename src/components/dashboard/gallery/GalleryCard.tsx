@@ -86,12 +86,18 @@ export default function GalleryCard({
       <div className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
         {/* Cover */}
         <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={coverImage}
-            alt={title}
-            fill
-            className="object-cover transition duration-500 group-hover:scale-110"
-          />
+          {coverImage ? (
+            <Image
+              src={coverImage}
+              alt={title}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-zinc-200">
+              No Image
+            </div>
+          )}
 
           <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/30" />
 
@@ -135,11 +141,10 @@ export default function GalleryCard({
 
             <div>
               <span
-                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                  status === "public"
-                    ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
-                    : "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400"
-                }`}
+                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${status === "public"
+                  ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                  : "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400"
+                  }`}
               >
                 {status}
               </span>
@@ -161,9 +166,11 @@ export default function GalleryCard({
               </Button>
             </Link>
 
-            <Button variant="ghost">
-              <HiOutlinePencilSquare className="text-lg" />
-            </Button>
+            <Link href={`/dashboard/gallery/edit/${id}`}>
+              <Button variant="ghost">
+                <HiOutlinePencilSquare className="text-lg" />
+              </Button>
+            </Link>
 
             <Button
               variant="ghost"

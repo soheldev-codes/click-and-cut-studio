@@ -72,3 +72,22 @@ export async function deleteGallery(id: string) {
 
   return response.json();
 }
+
+
+
+
+
+export async function updateGallery(
+  id: string,
+  payload: CreateGalleryPayload
+) {
+  const { data } = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/gallery/${id}`,
+    payload,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return data;
+}

@@ -11,10 +11,29 @@ import {
   type GallerySchema,
 } from "@/lib/validations/gallery.schema";
 
+type InitialGalleryData = Partial<GallerySchema> & {
+  coverImage?: string;
+  galleryImages?: string[];
+};
+
+
+type GalleryFormProps = {
+  mode?: "create" | "edit";
+  galleryId?: string;
+  initialData?: InitialGalleryData;
+};
+
 import Button from "@/components/ui/button";
 import { uploadGallery } from "@/hooks/useUploadGallery";
+import { updateGallery } from "@/services/gallery.service";
 import { useRouter } from "next/navigation";
-export default function GalleryForm() {
+import { uploadImage } from "@/lib/imgbb";
+
+export default function GalleryForm({
+  mode = "create",
+  galleryId,
+  initialData,
+}: GalleryFormProps) {
   const {
     register,
     reset,
@@ -23,41 +42,55 @@ export default function GalleryForm() {
   } = useForm<GallerySchema>({
     resolver: zodResolver(gallerySchema),
     defaultValues: {
-      visibility: "private",
+      title: initialData?.title ?? "",
+      clientName: initialData?.clientName ?? "",
+      clientEmail: initialData?.clientEmail ?? "",
+      eventType: initialData?.eventType ?? "",
+      eventDate: initialData?.eventDate ?? "",
+      visibility: initialData?.visibility ?? "private",
+      description: initialData?.description ?? "",
     },
   });
+
+  const [coverPreview, setCoverPreview] = useState(
+    initialData?.coverImage ?? ""
+  );
 
 
   const router = useRouter();
 
-  async function onSubmit(data: GallerySchema) {
-    if (!coverFile) {
-      alert("Please select a cover image");
-      return;
-    }
+ 
 
-    if (galleryFiles.length === 0) {
-      alert("Please select gallery images");
-      return;
-    }
+async function onSubmit(data: GallerySchema) {
+  try {
+    if (mode === "create") {
+      if (!coverFile) { alert("Please select a cover image"); return; } 
+      if (galleryFiles.length === 0) { alert("Please select gallery images"); return; } 
+      await uploadGallery({...data, coverFile, galleryFiles, });
+    } else {
+      if (!galleryId) return;
 
-    try {
-      await uploadGallery({
+      let coverImage = initialData?.coverImage as string;
+
+      // user new image select করেছে
+      if (coverFile) {
+        coverImage = await uploadImage(coverFile);
+      }
+
+      await updateGallery(galleryId, {
         ...data,
-        coverFile,
-        galleryFiles,
+        coverImage,
+        galleryImages:
+          (initialData?.galleryImages as string[]) ?? [],
       });
-
-      reset();
-
-      setCoverFile(null);
-      setGalleryFiles([]);
-
-      router.push("/dashboard/gallery");
-    } catch (error) {
-      console.error(error);
     }
+
+    reset();
+    router.push("/dashboard/gallery");
+  } catch (error) {
+    console.error(error);
   }
+}
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
 
@@ -66,7 +99,7 @@ export default function GalleryForm() {
 
   const preview = coverFile
     ? URL.createObjectURL(coverFile)
-    : null;
+    : coverPreview;
 
   return (
     <form
@@ -218,7 +251,16 @@ export default function GalleryForm() {
 
         <CoverUploader
           preview={preview}
-          onChange={setCoverFile}
+          existingImage={initialData?.coverImage}
+          onChange={(file) => {
+            setCoverFile(file);
+
+            if (file) {
+              setCoverPreview(URL.createObjectURL(file));
+            } else {
+              setCoverPreview("");
+            }
+          }}
         />
 
         <MultipleUploader
@@ -228,11 +270,11 @@ export default function GalleryForm() {
       </div>
 
       <div className="mt-8 flex justify-end">
-        <Button
-          type="submit"
-          disabled={!coverFile || galleryFiles.length === 0}
-        >
-          Continue
+        <Button type="submit">
+
+          {mode === "create"
+            ? "Create Gallery"
+            : "Update Gallery"}
         </Button>
       </div>
     </form>
