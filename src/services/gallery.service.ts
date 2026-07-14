@@ -91,3 +91,37 @@ export async function updateGallery(
 
   return data;
 }
+
+
+export async function getPublicGalleries() {
+  const response = await fetch("/api/gallery/public", {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch public galleries");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
+
+
+
+export async function getPublicGallery(id: string) {
+  const response = await fetch(
+    `/api/gallery/public/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch gallery");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
