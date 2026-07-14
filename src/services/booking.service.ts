@@ -56,3 +56,44 @@ export async function getBooking(id: string) {
 
   return result.data;
 }
+
+
+
+export async function updateBookingStatus(
+  id: string,
+  status: string
+) {
+  const response = await fetch(`/api/booking/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      status,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update booking");
+  }
+
+  return response.json();
+}
+
+
+
+export async function deleteBooking(id: string) {
+  const response = await fetch(`/api/booking/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete booking");
+  }
+
+  return response.json();
+}
+
+

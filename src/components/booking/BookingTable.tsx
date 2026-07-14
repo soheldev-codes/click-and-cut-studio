@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import BookingToolbar from "./BookingToolbar";
 import { getBookings } from "@/services/booking.service";
 import BookingRow, { Booking } from "./BookingRow";
 
@@ -9,6 +9,28 @@ export default function BookingTable() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [search, setSearch] = useState("");
+const [status, setStatus] = useState("All");
+  
+const filteredBookings = bookings.filter((booking) => {
+  const matchesSearch =
+    booking.fullName
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    booking.email
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    booking.phone
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+  const matchesStatus =
+    status === "All" ||
+    booking.status === status;
+
+  return matchesSearch && matchesStatus;
+});
+  
   useEffect(() => {
     async function loadBookings() {
       try {
@@ -42,13 +64,21 @@ export default function BookingTable() {
   }
 
   return (
-    <div className="space-y-4">
-      {bookings.map((booking) => (
-        <BookingRow
-          key={booking._id}
-          booking={booking}
-        />
-      ))}
-    </div>
+    <>
+      <BookingToolbar
+        search={search}
+        status={status}
+        onSearchChange={setSearch}
+        onStatusChange={setStatus}
+      />
+      <div className="space-y-4">
+        {filteredBookings.map((booking) => (
+          <BookingRow
+            key={booking._id}
+            booking={booking}
+          />
+        ))}
+      </div>
+    </>
   );
 }
