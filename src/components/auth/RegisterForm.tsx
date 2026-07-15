@@ -25,9 +25,10 @@ export default function RegisterForm() {
       callbackURL: "/",
     });
 
-    if (error) {
-      toast.error(error?.message);
-      return;
+    if (error?.message) {
+      toast.error(error.message);
+    } else {
+      toast.error("Registration failed");
     }
 
     toast.success("Account created successfully!");

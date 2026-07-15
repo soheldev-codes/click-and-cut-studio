@@ -19,6 +19,7 @@ type ClientGalleryCardProps = {
   totalImages: number;
   coverImage: string;
   eventDate: string;
+  status: "private" | "public";
 };
 
 export default function ClientGalleryCard({
@@ -29,6 +30,7 @@ export default function ClientGalleryCard({
   totalImages,
   coverImage,
   eventDate,
+  status
 }: ClientGalleryCardProps) {
   return (
     <div className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-zinc-800 dark:bg-zinc-900">

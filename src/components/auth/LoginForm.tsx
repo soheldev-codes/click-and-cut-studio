@@ -27,9 +27,10 @@ export default function LoginForm() {
       callbackURL: "/",
     });
 
-    if (error) {
+    if (error?.message) {
       toast.error(error.message);
-      return;
+    } else {
+      toast.error("Login failed");
     }
 
     toast.success("Login successful");

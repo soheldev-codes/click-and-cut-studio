@@ -36,9 +36,16 @@ export interface Gallery {
   updatedAt: Date;
 }
 
-export type CreateGallery = Omit<
-  Gallery,
-  "_id" | "createdAt" | "updatedAt"
->;
+export type CreateGallery = {
+  title: string;
+  clientName: string;
+  clientEmail: string;
+  eventType: string;
+  eventDate: string;
+  description: string;
+  visibility: GalleryVisibility;
+  coverImage: string;
+  galleryImages: string[];
+};
 
 export type UpdateGallery = Partial<CreateGallery>;
