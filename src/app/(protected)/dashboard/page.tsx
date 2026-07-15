@@ -1,4 +1,5 @@
 import StatsCards from "@/components/dashboard/analytics/StatsCards";
+import BookingChart from "@/components/dashboard/analytics/BookingChart";
 
 export default function DashboardPage() {
   return (
@@ -15,6 +16,8 @@ export default function DashboardPage() {
       </div>
 
       <StatsCards />
+
+      <BookingChart />
 
     </div>
   );
