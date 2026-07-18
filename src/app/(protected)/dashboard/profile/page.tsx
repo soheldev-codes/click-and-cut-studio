@@ -1,20 +1,18 @@
-import React from 'react';
+import ProfileCard from "@/components/dashboard/profile/ProfileCard";
 
-// প্রপসের জন্য ইন্টারফেস ডিফাইন করা
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-}
-
-const SimpleButton: React.FC<ButtonProps> = ({ label, onClick }) => {
+export default function ProfilePage() {
   return (
-    <button 
-      onClick={onClick}
-      style={{ padding: '10px 20px', cursor: 'pointer' }}
-    >
-      {label} Hello Profile
-    </button>
-  );
-};
+    <section className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold">
+          My Profile
+        </h1>
 
-export default SimpleButton;
+        <p className="text-zinc-500">
+          Manage your account information.
+        </p>
+      </div>
+
+      <ProfileCard />
+    </section>
+)}
