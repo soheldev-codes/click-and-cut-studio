@@ -1,5 +1,7 @@
 import StatsCards from "@/components/dashboard/analytics/StatsCards";
 import BookingChart from "@/components/dashboard/analytics/BookingChart";
+import RecentBookings from "@/components/dashboard/analytics/RecentBookings";
+import RecentGalleries from "@/components/dashboard/analytics/RecentGalleries";
 
 export default function DashboardPage() {
   return (
@@ -18,6 +20,11 @@ export default function DashboardPage() {
       <StatsCards />
 
       <BookingChart />
+
+      <RecentBookings />
+
+      <RecentGalleries />
+
 
     </div>
   );

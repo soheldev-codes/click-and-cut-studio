@@ -37,3 +37,24 @@ export async function getBookingChart() {
 
   return result.data;
 }
+
+
+
+export async function getRecentDashboardData() {
+  const response = await fetch(
+    "/api/dashboard/recent",
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch recent dashboard data"
+    );
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
