@@ -1,5 +1,5 @@
 "use client";
-
+import { ADMIN_EMAILS } from "@/constants/navigation";
 import Link from "next/link";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import {
@@ -88,6 +88,10 @@ export default function UserMenu() {
 
   const user = data.user;
 
+  const isAdmin = ADMIN_EMAILS.includes(
+  user.email as (typeof ADMIN_EMAILS)[number]
+);
+
   const initials =
     user.name
       ?.split(" ")
@@ -169,35 +173,41 @@ export default function UserMenu() {
 <div className="my-5 border-t border-zinc-200 dark:border-zinc-800" />
 
 <div className="space-y-1">
-  <Link
-    href="/dashboard"
-    onClick={() => setOpen(false)}
-    className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-  >
-    <RxDashboard className="text-lg" />
-    Dashboard
-  </Link>
+  {isAdmin && (
+    <Link
+      href="/admin/dashboard"
+      onClick={() => setOpen(false)}
+      className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+    >
+      <RxDashboard className="text-lg" />
+      Admin Dashboard
+    </Link>
+  )}
+
+  {!isAdmin && (
+    <>
+      <Link
+        href="/client/gallery"
+        onClick={() => setOpen(false)}
+        className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+      >
+        <HiOutlinePhoto className="text-lg" />
+        My Gallery
+      </Link>
+
+      <Link
+        href="/client/bookings"
+        onClick={() => setOpen(false)}
+        className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
+      >
+        <HiOutlineCalendarDays className="text-lg" />
+        My Bookings
+      </Link>
+    </>
+  )}
 
   <Link
-    href="/gallery"
-    onClick={() => setOpen(false)}
-    className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-  >
-    <HiOutlinePhoto className="text-lg" />
-    My Gallery
-  </Link>
-
-  <Link
-    href="/bookings"
-    onClick={() => setOpen(false)}
-    className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-  >
-    <HiOutlineCalendarDays className="text-lg" />
-    My Bookings
-  </Link>
-
-  <Link
-    href="/profile"
+    href="/dashboard/profile"
     onClick={() => setOpen(false)}
     className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
   >
