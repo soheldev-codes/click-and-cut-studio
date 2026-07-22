@@ -5,10 +5,6 @@ export const bookingSchema = z.object({
     .string()
     .min(3, "Full name is required"),
 
-  email: z
-    .string()
-    .email("Invalid email"),
-
   phone: z
     .string()
     .min(11, "Phone number is required"),

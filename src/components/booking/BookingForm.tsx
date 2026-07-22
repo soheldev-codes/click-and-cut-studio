@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-
+import { useSession } from "@/lib/auth-client";
 import Button from "@/components/ui/button";
 import {
   bookingSchema,
@@ -14,6 +14,8 @@ import { createBooking } from "@/services/booking.service";
 
 export default function BookingForm() {
   const [loading, setLoading] = useState(false);
+
+  const { data: session } = useSession();
 
   const {
     register,
@@ -73,26 +75,17 @@ export default function BookingForm() {
           )}
         </div>
 
-        {/* Email */}
-
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Email
+            Logged in Account
           </label>
 
-          <input
-            type="email"
-            {...register("email")}
-            placeholder="john@gmail.com"
-            className="h-11 w-full rounded-xl border border-zinc-200 px-4 outline-none transition focus:border-violet-500 dark:border-zinc-700 dark:bg-zinc-900"
-          />
-
-          {errors.email && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.email.message}
-            </p>
-          )}
+          <div className="flex h-11 items-center rounded-xl border border-zinc-200 bg-zinc-100 px-4 text-sm text-zinc-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            {session?.user?.email}
+          </div>
         </div>
+
+
 
         {/* Phone */}
 

@@ -1,30 +1,32 @@
 import axios from "axios";
 
-export type BookingPayload = {
-  fullName: string;
-  email: string;
-  phone: string;
-  eventType: string;
-  eventDate: string;
-  location: string;
-  budget: string;
-  message: string;
+import type {
+  Booking,
+  BookingStatus,
+  CreateBooking,
+} from "@/types/booking";
+
+type ApiResponse<T> = {
+  success: boolean;
+  message?: string;
+  data: T;
+};
+
+type CreateBookingResponse = {
+  insertedId: string;
 };
 
 export async function createBooking(
-  payload: BookingPayload
-) {
-  const { data } = await axios.post(
-    "/api/booking",
-    payload
-  );
+  payload: CreateBooking
+): Promise<ApiResponse<CreateBookingResponse>> {
+  const { data } = await axios.post<
+    ApiResponse<CreateBookingResponse>
+  >("/api/booking", payload);
 
   return data;
 }
 
-
-
-export async function getBookings() {
+export async function getBookings(): Promise<Booking[]> {
   const response = await fetch("/api/booking", {
     credentials: "include",
     cache: "no-store",
@@ -34,15 +36,15 @@ export async function getBookings() {
     throw new Error("Failed to fetch bookings");
   }
 
-  const result = await response.json();
+  const result: ApiResponse<Booking[]> =
+    await response.json();
 
   return result.data;
 }
 
-
-
-
-export async function getBooking(id: string) {
+export async function getBooking(
+  id: string
+): Promise<Booking> {
   const response = await fetch(`/api/booking/${id}`, {
     credentials: "include",
     cache: "no-store",
@@ -52,17 +54,16 @@ export async function getBooking(id: string) {
     throw new Error("Failed to fetch booking");
   }
 
-  const result = await response.json();
+  const result: ApiResponse<Booking> =
+    await response.json();
 
   return result.data;
 }
 
-
-
 export async function updateBookingStatus(
   id: string,
-  status: string
-) {
+  status: BookingStatus
+): Promise<ApiResponse<null>> {
   const response = await fetch(`/api/booking/${id}`, {
     method: "PATCH",
     credentials: "include",
@@ -81,9 +82,9 @@ export async function updateBookingStatus(
   return response.json();
 }
 
-
-
-export async function deleteBooking(id: string) {
+export async function deleteBooking(
+  id: string
+): Promise<ApiResponse<null>> {
   const response = await fetch(`/api/booking/${id}`, {
     method: "DELETE",
     credentials: "include",
@@ -96,4 +97,20 @@ export async function deleteBooking(id: string) {
   return response.json();
 }
 
+export async function getClientBookings(): Promise<Booking[]> {
+  const response = await fetch("/api/client/bookings", {
+    credentials: "include",
+    cache: "no-store",
+  });
 
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch client bookings"
+    );
+  }
+
+  const result: ApiResponse<Booking[]> =
+    await response.json();
+
+  return result.data;
+}

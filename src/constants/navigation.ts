@@ -8,6 +8,8 @@ export const PUBLIC_NAV_LINKS = [
 
 export const CLIENT_NAV_LINKS = [
   { label: "My Gallery", href: "/client/gallery" },
+  { label: "My Profile", href: "/client/profile" },
+  { label: "Booking Now", href: "/booking" },
   { label: "My Bookings", href: "/client/bookings" },
 ] as const;
 
